@@ -46,7 +46,6 @@ function renderManifest(manifest, subdomain) {
 }
 
 function sanitizedFilename(type, name) {
-    // TODO: sanitize
     type = type.replace(/[^\w-]/g, "");
     name = name.replace(/[^\w-]/g, "");
     return path.join(__dirname, type, name);
