@@ -26,7 +26,7 @@ function manifestLocation(origin) {
 }
 
 $(function() {
-    $.get("/manifest.webapp", function(data) {
+    $.get("/manifest.raw", function(data) {
         $('#manifest').val(JSON.stringify(data, null, 4));
     });
     $('#domainlist')
