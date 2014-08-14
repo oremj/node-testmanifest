@@ -4,7 +4,7 @@ var domainBase = domainParts.slice(-2).join(".");
 var subDomains = domainParts.slice(0, -2);
 var subDomain = subDomains.slice(0,1).join("");
 
-if(subDomain === "") {
+if(subDomain === "" || subDomain === "www") {
     subDomain = uuid.v4().split('-')[0];
 }
 
@@ -25,86 +25,38 @@ function manifestLocation(origin) {
     return origin + '/manifest.webapp';
 }
 
-$(function() {
-    $.get("/manifest.raw", function(data) {
-        $('#manifest').val(JSON.stringify(data, null, 4));
-    });
-    $('#domainlist')
-        .append($('<li>').text(window.location.origin))
-        .append($('<li>').html(getOrigin(subDomain + '<span>-1</span>')))
-        .append($('<li>').html(getOrigin(subDomain + '<span>-2</span>')))
-        .append($('<li>').html(getOrigin(subDomain + '<span>-new</span>')))
-        .append($('<li>').html(getOrigin(subDomain + '<span>-&lt;anything&gt;</span>')));
+angular.module('testmanifest', [])
+.controller('IndexCtrl', function($scope) {
+    $scope.manifestLocation = manifestLocation(getOrigin(subDomain));
+    $scope.newDomain = getOrigin(subDomain);
 
-    $('#edit').attr('href', getOrigin(subDomain));
-    $('#thingy').val(manifestLocation(getOrigin(subDomain)));
-    $('#install').click(function(e) {
-        e.preventDefault();
+    $scope.install = function() {
         if(!navigator.mozApps) {
             alert("Your browser doesn't support app installation. Try Firefox Nightly.");
             return;
         }
-        if(isSubdomain(subDomains)) {
-            navigator.mozApps.install(manifestLocation(window.location.origin));
-        } else {
-            navigator.mozApps.install(manifestLocation(getOrigin(subDomain)));
+        navigator.mozApps.install(manifestLocation(getOrigin(subDomain)));
+    };
+
+
+})
+.controller('EditCtrl', function($scope, $http) {
+    $http.get("/manifest.raw").success(function(data) {
+        $scope.manifest = JSON.stringify(data, null, 4);
+    });
+    $scope.manifestLocation = manifestLocation(getOrigin(subDomain));
+    $scope.newDomain = getOrigin(subDomain);
+    $scope.manifest = "";
+    $scope.subDomain = subDomain;
+    $scope.getSubURL = function(suffix) {
+        return getOrigin(subDomain + suffix);
+    };
+
+    $scope.install = function() {
+        if(!navigator.mozApps) {
+            alert("Your browser doesn't support app installation. Try Firefox Nightly.");
+            return;
         }
-    });
-    $('#thingy')[0].focus();
-    $('#thingy')[0].select();
-
-    $('#browserid').click(function(e) {
-        e.preventDefault();
-        navigator.id.get(gotAssertion);
-        return false;
-    });
+        navigator.mozApps.install(manifestLocation(window.location.origin));
+    };
 });
-
-function loggedIn(res) {
-    $('#locking').hide();
-    $('#locking').html(res);
-    $('#locking').fadeIn();
-    updateLoggedin();
-}
-
-function loggedOut(res) {
-    alert('logged out!');
-}
-
-$('#locking').delegate('.lock-input', 'click', function(e) {
-    e.preventDefault();
-
-    var $this = $(this),
-        action = $this.attr('data-action');
-
-    $.post('/lock', {'action': action}, function(d) {
-        $('#locking').html(d);
-        updateLoggedin();
-    });
-});
-
-function updateLoggedin() {
-    if($('#locking').find('.lock-input').length) {
-        $('.is_locked').removeClass('is_locked').addClass('is_unlocked');
-    }
-}
-
-function gotAssertion(assertion) {
-  // got an assertion, now send it up to the server for verification
-  if (assertion !== null) {
-    $.ajax({
-      type: 'POST',
-      url: '/login',
-      data: { assertion: assertion },
-      success: function(res, status, xhr) {
-        if (res === null) {}//loggedOut();
-          else loggedIn(res);
-        },
-      error: function(res, status, xhr) {
-        alert("login failure" + res);
-      }
-    });
-  } else {
-    loggedOut();
-  }
-}

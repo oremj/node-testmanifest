@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="testmanifest" lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Test Manifest</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <style>
-    </style>
+    <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/node-uuid/uuid.js" type="text/javascript"></script>
   </head>
-  <body id="home">
+  <body id="home" ng-controller="IndexCtrl">
     <div style="text-align: center;">
         <h1>Your random manifest is&hellip;</h1>
-        <input type="text" id="thingy" >
+        <input type="text" id="thingy" ng-model="manifestLocation">
         <br>
-        <a id="edit" href="#">edit</a> &middot; <a href="#" id="install">install</a>
+        <a id="edit" href="{{newDomain}}">edit</a> &middot; <a ng-click="install()" href="#" id="install">install</a>
         &middot; <a href="/">get another</a>
         <br>
         <div style="color: #999; font-size: 0.9em; padding-top: 10px;">
         Absolutely any subdomain will work
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>
