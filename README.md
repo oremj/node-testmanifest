@@ -1,6 +1,8 @@
 node-testmanifest
 =================
 
+Ported from https://github.com/gkoberger/testmanifest.com
+
 # Running
 ```
 npm install
