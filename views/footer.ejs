@@ -1,13 +1,23 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
     <script>
+    var subDomain = '<%= subdomain %>';
+    var domainBase = window.location.hostname.split('.').splice(-2).join('.');
+    var origin = window.location.protocol + '//' + subDomain + '.' + domainBase;
+    if (window.location.port !== "") {
+        origin += ":" + window.location.port;
+    }
+    var manifestLocation = origin + '/manifest.webapp';
+
     $(function() {
+        $('#edit').attr('href', origin);
+        $('#thingy').val(manifestLocation);
         $('#install').click(function(e) {
             e.preventDefault();
             if(!navigator.mozApps) {
                 alert("Your browser doesn't support app installation. Try Firefox Nightly.");
                 return;
             }
-            navigator.mozApps.install('http://<%= subdomain %>.testmanifest.com/manifest.webapp');
+            navigator.mozApps.install(manifestLocation);
         });
         $('#thingy')[0].focus();
         $('#thingy')[0].select();
