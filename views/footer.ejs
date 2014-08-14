@@ -9,6 +9,11 @@
     var manifestLocation = origin + '/manifest.webapp';
 
     $(function() {
+        $('#domainlist')
+            .append($('<li>').text(origin))
+            .append($('<li>').html(window.location.protocol + '//' + subDomain + '<span>-1</span>.' + domainBase))
+            .append($('<li>').html(window.location.protocol + '//' + subDomain + '<span>-new</span>.' + domainBase))
+            .append($('<li>').html(window.location.protocol + '//' + subDomain + '<span>-&lt;anything&gt;</span>.' + domainBase));
         $('#edit').attr('href', origin);
         $('#thingy').val(manifestLocation);
         $('#install').click(function(e) {
