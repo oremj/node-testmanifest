@@ -4,14 +4,13 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var path = require('path');
 var program = require('commander');
-var uuid = require('node-uuid');
 var mkdirp = require('mkdirp').sync;
 
 function subdomainMiddle(req, res, next) {
     
     var hostParts = req.hostname.split(".");
     if(hostParts.length < 3 || hostParts[0] == "www") {
-        res.locals.subdomain = uuid.v1().split('-')[0];
+        res.locals.subdomain = 'remove';
     } else {
         req.url = "/subdomain/" + hostParts[0] + req.url;
         res.locals.subdomain = hostParts[0];
@@ -94,12 +93,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(subdomainMiddle);
 app.use(logger('dev'));
 app.get("/", function(req, res) {
-    res.render('index');
+    res.sendFile(__dirname + "/public/index.html");
 });
 
 app.get("/subdomain/:subdomain", addManifest, function(req, res) {
-    res.locals.json = res.locals.manifestData;
-    res.render('edit');
+    res.sendFile(__dirname + "/public/edit.html");
 });
 
 app.post("/subdomain/:subdomain", function(req, res) {
@@ -113,6 +111,10 @@ app.get("/subdomain/:subdomain/manifest.webapp", addManifest, function(req, res)
     res.set('Content-Type', 'application/x-web-app-manifest+json');
     res.send(renderManifest(res.locals.manifestData, res.locals.subdomain));
 });
+
+app.use(express.static(__dirname + '/public'));
+app.use('/subdomain/:subdomain', express.static(__dirname + '/public'));
+
 
 program
     .option('-p, --port <port>', 'Bind Port', 3000, parseInt)

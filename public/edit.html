@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Test Manifest</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <style>
+    </style>
+    <script src="bower_components/node-uuid/uuid.js" type="text/javascript"></script>
+  </head>
+  <body id="home">
+    <div id="sidebar">
+        <button id="install">Install!</button>
+        <hr>
+        <p>If you update the manifest, it will also be available at any of the following subdomains:</p>
+        <ul id="domainlist">
+        </ul>
+        <p>Subdomains are namespaced. Using a dash will allow you to serve manifests from different URLs while maintaining the manifest of the namespace.</p>
+
+    </div>
+
+    <form method="POST" class="is_unlocked">
+        <input type="text" id="thingy">
+        <br>
+        <br>
+
+        <button type='submit'>Save</button>
+        <p class="locked">This manifest can't be saved because it is locked by someone other than you.</p>
+    <br>
+        <textarea id="manifest" name='manifest'></textarea>
+        <br>
+        <button type='submit'>Save</button>
+        <p class="locked">This manifest can't be saved because it is locked by someone other than you.</p>
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
