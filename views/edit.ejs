@@ -1,0 +1,31 @@
+<% include header %>
+<div id="sidebar">
+    <button id="install">Install!</button>
+    <hr>
+    <p>If you update the manifest, it will also be available at any of the following subdomains:</p>
+    <ul>
+    <li>http://<%= subdomainBase %>.testmanifest.com</li>
+    <li>http://<%= subdomainBase %>-<span>test</span>.testmanifest.com</li>
+    <li>http://<%= subdomainBase %>-<span>1</span>.testmanifest.com</li>
+    <li>http://<%= subdomainBase %>-<span>2</span>.testmanifest.com</li>
+    <li>http://<%= subdomainBase %>-<span>new</span>.testmanifest.com</li>
+    <li>http://<%= subdomainBase %>-<span>&lt;anything&gt;</span>.testmanifest.com</li>
+    </ul>
+    <p>Subdomains are namespaced. Using a dash will allow you to serve manifests from different URLs while maintaining the manifest of the namespace.</p>
+
+</div>
+
+<form method="POST" class="is_unlocked">
+    <input type="text" id="thingy" value="<%= manifest %>">
+    <br>
+    <br>
+
+    <button type='submit'>Save</button>
+    <p class="locked">This manifest can't be saved because it is locked by someone other than you.</p>
+<br>
+    <textarea name='manifest'><%= json %></textarea>
+    <br>
+    <button type='submit'>Save</button>
+    <p class="locked">This manifest can't be saved because it is locked by someone other than you.</p>
+</form>
+<% include footer %>
