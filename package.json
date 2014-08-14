@@ -1,0 +1,24 @@
+{
+  "name": "node-testmanifest",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/oremj/node-testmanifest.git"
+  },
+  "author": "Jeremiah Orem",
+  "license": "MPL2",
+  "bugs": {
+    "url": "https://github.com/oremj/node-testmanifest/issues"
+  },
+  "dependencies": {
+    "express": "~4.8.3",
+    "commander": "~2.3.0",
+    "ejs": "~1.0.0",
+    "morgan": "~1.2.2"
+  }
+}
