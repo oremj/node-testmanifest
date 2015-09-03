@@ -5,6 +5,7 @@ var logger = require('morgan');
 var path = require('path');
 var program = require('commander');
 var mkdirp = require('mkdirp').sync;
+var IDNAToUnicode = require('punycode').toUnicode;
 
 function subdomainMiddle(req, res, next) {
     
@@ -52,6 +53,7 @@ function unslugify(slug) {
 
 function renderManifest(manifest, subdomain, isTestApp) {
     var name = null;
+    subdomain = IDNAToUnicode(subdomain);
     if (isTestApp) {
         name = "Test App (" + subdomain + ")";
     } else {
